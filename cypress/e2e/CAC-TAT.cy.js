@@ -10,7 +10,7 @@ cy.visit('../src/index.html')
 
 describe('Central de Atendimento ao Cliente TAT', () => {
   //DEFINE A SUITE DE TESTE
-  it('verifica o título da aplicação', () => {
+  it('CT0001: verifica o título da aplicação', () => {
   //DEFINE O CASO DE TESTE
 
     cy.title().should('eq', 'Central de Atendimento ao Cliente TAT')
@@ -18,72 +18,66 @@ describe('Central de Atendimento ao Cliente TAT', () => {
     //TESTANDO LOCAL É BOM PARA QUANDO TESTAR NA INTEGRAÇÃO CONTINUA ELE PEGA QUANDO VOCE QUEBRA A APLICAÇÃO
   })
 
-  it('preenche os campos obrigatórios e envia o formulário', () => {
+  it('CT0002: preenche os campos obrigatórios e envia o formulário', () => {
     cy.get('#firstName').type('Raquel')
     cy.get('#lastName').type('Guimarães')
     cy.get('#email').type('raquel@teste.com')
     cy.get('#phone').type('11985160228')
     cy.get('#open-text-area').type('Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.', {delay : 0})
-    cy.get('button[type="submit"]').click()
+    cy.contains('button','Enviar').click()
 
     cy.get('.success').should('be.visible')
   })
 
-  it('exibe mensagem de erro ao submeter o formulário com um email com formatação inválida', () => {
+  it('CT0003: exibe mensagem de erro ao submeter o formulário com um email com formatação inválida', () => {
     cy.get('#firstName').type('Raquel')
     cy.get('#lastName').type('Guimarães')
     cy.get('#email').type('raquel@teste')
     cy.get('#phone').type('11985160228')
     cy.get('#open-text-area').type('Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.', {delay : 0})
-    cy.get('button[type="submit"]').click()
+    cy.contains('button','Enviar').click()
     
     cy.get('.error').should('be.visible')
   })
 
-  it('campo telefone continua vazio após ser preenchido com valor não-numérico', () => {
+  it('CT0004: campo telefone continua vazio após ser preenchido com valor não-numérico', () => {
      cy.get('#phone').type('telefone').should('have.value', '')
   })
 
-  it('exibe mensagem de erro quando o telefone se torna obrigatório mas não é preenchido antes do envio do formulário', () => {
+  it('CT0005: exibe mensagem de erro quando o telefone se torna obrigatório mas não é preenchido antes do envio do formulário', () => {
     cy.get('#firstName').type('Raquel')
     cy.get('#lastName').type('Guimarães')
     cy.get('#email').type('raquel@teste.com')
     //cy.get('#phone-checkbox').type('true')
     cy.get('#phone-checkbox').click()
     cy.get('#open-text-area').type('Lorem Ipsum is simply dummy text of the printing and typesetting industry. ', {delay : 0})
-    cy.get('button[type="submit"]').click()
+    cy.contains('button','Enviar').click()
     
     cy.get('.error').should('be.visible')
   })
 
-  it('preenche e limpa os campos nome, sobrenome, email e telefone', () => {
+  it('CT0006: preenche e limpa os campos nome, sobrenome, email e telefone', () => {
     cy.get('#firstName').type('Raquel').should('have.value', 'Raquel').clear().should('have.value', '')
     cy.get('#lastName').type('Guimarães').should('have.value', 'Guimarães').clear().should('have.value', '')
     cy.get('#email').type('raquel@teste.com').should('have.value', 'raquel@teste.com').clear().should('have.value', '')
     cy.get('#phone').type('11985160228').should('have.value', '11985160228').clear().should('have.value', '')
   })
 
-  it('exibe mensagem de erro ao submeter o formulário sem preencher os campos obrigatórios', ()=> {
-    cy.get('button[type="submit"]').click()
+  it('CT0007: exibe mensagem de erro ao submeter o formulário sem preencher os campos obrigatórios', ()=> {
+    //cy.get('form').contains('button','Enviar').click()
     
+    cy.contains('button','Enviar').click()
+
     cy.get('.error').should('be.visible')
   })
 
 
   //podemos fazer uso de comandos customizados para evitar duplicação de código
   //
-  it('envia o formulário com sucesso usando um comando customizado', () => {
-    const data = {
-      firstName: 'Raquel',
-      lastName:  'Guimarães',
-      email: 'raquel@teste.com',
-      phone: '11985160228',
-      text: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.'
-    }
+  it('CT0008: envia o formulário com sucesso usando um comando customizado', () => {
+    cy.fillMandatoryFieldsAndSubmit()
 
-     cy.fillMandatoryFieldsAndSubmit(data)
-
-     cy.get('.success').should('be.visible')
+    cy.get('.success').should('be.visible')
   })
 
  
