@@ -80,6 +80,35 @@ describe('Central de Atendimento ao Cliente TAT', () => {
     cy.get('.success').should('be.visible')
   })
 
- 
+  it('CT0009: seleciona um produto (YouTube) por seu texto', () => {
+    cy.get('#product').select('YouTube').should('have.value', 'youtube')
+
+  })
+
+  
+  it('CT0010: seleciona um produto (Mentoria) por seu valor (value)', () => {
+    cy.get('#product').select('mentoria').should('have.value', 'mentoria')
+  })
+
+  it('CT0011: seleciona um produto (Blog) por seu índice', () => {
+    cy.get('#product').select(1).should('have.value', 'blog')
+  })
+
+  it('CT0012: marca o tipo de atendimento "Feedback"', () => {
+    //cy.get('input[type="radio"]').check('feedback').should('have.value', 'feedback', 'be.checked')
+    cy.get('input[type="radio"][value="feedback"]').check().should('be.checked')
+  })
+
+  it.only('CT0013: marca cada tipo de atendimento', () => {
+     //cy.get('input[type="radio"]').check('feedback').should('have.value', 'feedback', 'be.checked')
+    // cy.get('input[type="radio"]').check('ajuda').should('have.value', 'ajuda', 'be.checked')
+    // cy.get('input[type="radio"]').check('elogio').should('have.value', 'elogio', 'be.checked')
+    cy.get('input[type="radio"]')
+      .each((typeOfService) => {   //ela recebe uma function - aqui ela recebe essa função de callback typeOfService
+      cy.wrap(typeOfService)
+      .check().should('be.checked')
+    })
+  })
+
 
 })
