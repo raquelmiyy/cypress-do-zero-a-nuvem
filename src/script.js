@@ -6,7 +6,7 @@ const phoneField = document.getElementById('phone')
 document.querySelector('#phone-checkbox')
   .addEventListener('change', function() {
     if (this.checked) {
-      phoneLabelSpan.style.display = 'inline'
+    //  phoneLabelSpan.style.display = 'inline'
     } else {
       phoneLabelSpan.style.display = 'none'
     }
@@ -21,9 +21,9 @@ document.querySelector('button[type="submit"]')
     const lastNameField = document.getElementById('lastName')
     const emailField = document.getElementById('email')
     const textareaField = document.getElementById('open-text-area')
-    const productField = document.getElementById('product')
-    const helpRadio = document.querySelector('input[value="ajuda"]')
-    const emailCheckbox = document.getElementById('email-checkbox')
+    //const productField = document.getElementById('product')
+    //const helpRadio = document.querySelector('input[value="ajuda"]')
+    //const emailCheckbox = document.getElementById('email-checkbox')
     const phoneCheckbox = document.getElementById('phone-checkbox')
     const fileField = document.querySelector('input[type="file"]')
     const successMessage = document.querySelector('.success')
