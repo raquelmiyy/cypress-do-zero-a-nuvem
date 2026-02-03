@@ -1,6 +1,3 @@
-const { it } = require("mocha")
-const { describe } = require("mocha")
-
 beforeEach(() => {
 cy.visit('../src/index.html')
 //para escrever testes nosso primeiro passo é visitar a página url
@@ -49,8 +46,9 @@ describe('Central de Atendimento ao Cliente TAT', () => {
     cy.get('#lastName').type('Guimarães')
     cy.get('#email').type('raquel@teste.com')
     //cy.get('#phone-checkbox').type('true')
-    cy.get('#phone-checkbox').click()
+    cy.get('#phone-checkbox').check()
     cy.get('#open-text-area').type('Lorem Ipsum is simply dummy text of the printing and typesetting industry. ', {delay : 0})
+    
     cy.contains('button','Enviar').click()
     
     cy.get('.error').should('be.visible')
@@ -99,7 +97,7 @@ describe('Central de Atendimento ao Cliente TAT', () => {
     cy.get('input[type="radio"][value="feedback"]').check().should('be.checked')
   })
 
-  it.only('CT0013: marca cada tipo de atendimento', () => {
+  it('CT0013: marca cada tipo de atendimento', () => {
      //cy.get('input[type="radio"]').check('feedback').should('have.value', 'feedback', 'be.checked')
     // cy.get('input[type="radio"]').check('ajuda').should('have.value', 'ajuda', 'be.checked')
     // cy.get('input[type="radio"]').check('elogio').should('have.value', 'elogio', 'be.checked')
@@ -108,6 +106,54 @@ describe('Central de Atendimento ao Cliente TAT', () => {
       cy.wrap(typeOfService)
       .check().should('be.checked')
     })
+  })
+
+  it('CT0014: marca ambos checkboxes, depois desmarca o último', ()=> {
+    cy.get('input[type="checkbox"]').check().should('be.checked').last().uncheck().should('not.be.checked')
+  })
+
+  it('CT0015: seleciona um arquivo da pasta fixtures', () => {
+    //cy.get('input[type="file"]').selectFile('cypress/fixtures/example.json').should('be.visible')
+    cy.get('#file-upload')
+    .selectFile('cypress/fixtures/example.json')
+    .should(input => {
+      //console.log(input)
+      expect(input[0].files[0].name).to.equal('example.json')
+    })
+  })
+
+  it('CT0017: seleciona um arquivo simulando um drag-and-drop', () => {
+    cy.get('#file-upload')
+    .selectFile('cypress/fixtures/example.json', {action: 'drag-drop'})  //add um objeto com uma propriedade action
+    .should(input => {
+      expect(input[0].files[0].name).to.equal('example.json')
+    })
+  })
+
+  it('CT0018: seleciona um arquivo utilizando uma fixture para a qual foi dada um alias', () => {
+    cy.fixture('example.json').as('sample file') 
+    cy.get('#file-upload')
+    .selectFile('@sample file', {action: 'drag-drop'})  //add um objeto com uma propriedade action
+    .should(input => {
+      expect(input[0].files[0].name).to.equal('example.json')
+    })
+  })
+
+  it('CT0019: verifica que a política de privacidade abre em outra aba sem a necessidade de um clique', () => {
+    //cy.get('#privacy')
+    //cy.get('a') genérico
+    //origin visita mutiplas abas
+    cy.contains('a', 'Política de Privacidade')
+    .should('have.attr', 'target', '_blank')
+    .and('have.attr','href','privacy.html')
+  })
+
+  it('CT0020: acessa a página da política de privacidade removendo o target e então clicando no link', ()=> {
+    cy.contains('a', 'Política de Privacidade')
+    .invoke('removeAttr', 'target')
+    .click()
+    
+    cy.contains('h1', 'CAC TAT - Política de Privacidade')
   })
 
 
