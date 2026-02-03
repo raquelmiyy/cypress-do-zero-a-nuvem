@@ -6,7 +6,7 @@ const phoneField = document.getElementById('phone')
 document.querySelector('#phone-checkbox')
   .addEventListener('change', function() {
     if (this.checked) {
-    //  phoneLabelSpan.style.display = 'inline'
+      phoneLabelSpan.style.display = 'inline'
     } else {
       phoneLabelSpan.style.display = 'none'
     }
@@ -21,9 +21,9 @@ document.querySelector('button[type="submit"]')
     const lastNameField = document.getElementById('lastName')
     const emailField = document.getElementById('email')
     const textareaField = document.getElementById('open-text-area')
-    //const productField = document.getElementById('product')
-    //const helpRadio = document.querySelector('input[value="ajuda"]')
-    //const emailCheckbox = document.getElementById('email-checkbox')
+    const productField = document.getElementById('product')
+    const helpRadio = document.querySelector('input[value="ajuda"]')
+    const emailCheckbox = document.getElementById('email-checkbox')
     const phoneCheckbox = document.getElementById('phone-checkbox')
     const fileField = document.querySelector('input[type="file"]')
     const successMessage = document.querySelector('.success')
@@ -31,7 +31,7 @@ document.querySelector('button[type="submit"]')
       return showAndHideErrorMessage()
     }
     if (isPhoneRequired && !phoneField.value) {
-      return showAndHideErrorMessage()
+    //  return showAndHideErrorMessage()
     }
     if (!emailField.value.match(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/)) {
       return showAndHideErrorMessage()
@@ -55,9 +55,9 @@ document.querySelector('button[type="submit"]')
 
 function showAndHideErrorMessage() {
   const errorMessage = document.querySelector('.error')
-  errorMessage.style.display = 'dd'
+  errorMessage.style.display = 'block'
   scroll(0,0)
-  hideMessageAfterTimeout(edrrorMessage)
+  hideMessageAfterTimeout(errorMessage)
   return
 }
 
